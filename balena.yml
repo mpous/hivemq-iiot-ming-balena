@@ -9,7 +9,7 @@ assets:
   repository:
     type: blob.asset
     data:
-      url: "https://github.com/mpous/hivemq-balena"
+      url: "https://github.com/mpous/hivemq-iiot-ming-balena"
   logo:
     type: blob.asset
     data:
