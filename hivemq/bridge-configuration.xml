@@ -1,0 +1,20 @@
+<hivemq-bridge-extension>
+    <bridges>
+        <bridge>
+            <name>your-unique-bridge-name</name>
+            <remote-broker>
+                <connection>
+                    <static>
+                        <host>the.hostname.of.remote.broker</host>
+                    </static>
+                </connection>
+            </remote-broker>
+            <topics>
+                <topic>
+                    <filter>a/topic/filter</filter>
+                </topic>
+            </topics>
+        </bridge>
+    </bridges>
+</hivemq-bridge-extension>
+
