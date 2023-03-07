@@ -7,19 +7,15 @@
             <enabled>true</enabled>
             <name>balena-hivemqcloud-bridge</name>
             <remote-broker>
-                <connection>
-                    <static>
-                        <host>157.230.76.185</host>
-                        <port>1883</port>
-                    </static>
-                </connection>
+            
+                <!-- authentication -->
+
+                <!-- configurable host and port -->
+
             </remote-broker>
-            <topics>
-                <topic>
-                    <filter>iiot/lab/cloud</filter>
-                    <filter>iiot/lab/webapp/status</filter>
-                </topic>
-            </topics>    
+
+            <!-- configurable list of filters -->
+            
         </bridge>
     </bridges>
 </hivemq-bridge-extension>

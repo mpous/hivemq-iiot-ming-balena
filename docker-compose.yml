@@ -79,8 +79,9 @@ services:
       - 8080:8080 # Control Center port
       - 8000:8000 # Websockets port
     volumes:
-      - hivemq_data:/opt/hivemq/data              # Make broker data persistent throughout stop/start cycles
-      - hivemq_log:/opt/hivemq/log                # Persist log data
+      - hivemq_data:/opt/hivemq/data                     # Make broker data persistent throughout stop/start cycles
+      - hivemq_log:/opt/hivemq/log                       # Persist log data
+      - hivemq_license:/opt/hivemq/license                # Persist HiveMQ license
     environment:
       JAVA_OPTS: "-XX:+UnlockExperimentalVMOptions -XX:InitialRAMPercentage=30 -XX:MaxRAMPercentage=80 -XX:MinRAMPercentage=30"
   
@@ -92,8 +93,6 @@ services:
 volumes:
   hivemq_data:
   hivemq_log:
-  hivemq_extensions:
-  hivemq_conf:
   hivemq_license:
   node-red-data:
   grafana-data:

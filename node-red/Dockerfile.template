@@ -17,7 +17,8 @@ RUN JOBS=MAX npm install -g --production --unsafe-perm \
       node-red-contrib-buffer-parser \
       node-red-contrib-opcua \
       node-red-contrib-mqtt-sparkplug-plus \
-      #node-red-contrib-balena \
+      node-red-dashboard \
+      node-red-contrib-balena \
     && JOBS=MAX npm install --unsafe-perm --production && npm cache clean --force
 
 ###

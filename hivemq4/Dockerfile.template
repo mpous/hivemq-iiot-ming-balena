@@ -1,6 +1,7 @@
-FROM hivemq/hivemq4:latest as unpack
+FROM hivemq/hivemq4:4.12.0 as unpack
 
 ENV HIVEMQ_VERSION=4.12.0
+
 
 FROM openjdk:11-jre-slim
 
@@ -42,21 +43,22 @@ RUN set -x \
         && apt-get purge -y gpg dirmngr && rm -rf /var/lib/apt/lists/* \
         && mkdir -p /docker-entrypoint.d
 
-#RUN chmod 777 /opt/hivemq-4.12.0/conf/
-
-COPY --from=unpack /opt/hivemq-4.12.0 /opt/hivemq-4.12.0
-COPY config.xml /opt/hivemq-4.12.0/conf
-COPY bridge-configuration.xml /opt/hivemq-4.12.0/extensions/hivemq-bridge-extension
+COPY --from=unpack /opt/hivemq-${HIVEMQ_VERSION} /opt/hivemq-${HIVEMQ_VERSION}
+COPY config.xml /opt/hivemq-${HIVEMQ_VERSION}/conf
+COPY bridge-configuration.xml /opt/hivemq-${HIVEMQ_VERSION}/extensions/hivemq-bridge-extension
 COPY docker-entrypoint.sh /opt/docker-entrypoint.sh
 COPY entrypoints.d/* /docker-entrypoint.d/
 
-RUN ln -s /opt/hivemq-4.12.0 /opt/hivemq \
+# Uncomment this line if you are going to use the HiveMQ Bridge Extension
+#RUN rm /opt/hivemq-${HIVEMQ_VERSION}/extensions/hivemq-bridge-extension/DISABLED
+
+RUN ln -s /opt/hivemq-${HIVEMQ_VERSION} /opt/hivemq \
     && groupadd --gid ${HIVEMQ_GID} hivemq \
     && useradd -g hivemq -d /opt/hivemq -s /bin/bash --uid ${HIVEMQ_UID} hivemq \
-    && chgrp 0 /opt/hivemq-4.12.0/conf/config.xml \
-    && chmod 770 /opt/hivemq-4.12.0/conf/config.xml \
-    && chgrp 0 /opt/hivemq-4.12.0/extensions/hivemq-bridge-extension/bridge-configuration.xml \
-    && chmod 770 /opt/hivemq-4.12.0/extensions/hivemq-bridge-extension/bridge-configuration.xml \
+    && chgrp 0 /opt/hivemq-${HIVEMQ_VERSION}/conf/config.xml \
+    && chmod 770 /opt/hivemq-${HIVEMQ_VERSION}/conf/config.xml \
+    && chgrp 0 /opt/hivemq-${HIVEMQ_VERSION}/extensions/hivemq-bridge-extension/bridge-configuration.xml \
+    && chmod 770 /opt/hivemq-${HIVEMQ_VERSION}/extensions/hivemq-bridge-extension/bridge-configuration.xml \
     && chgrp 0 /opt/hivemq \
     && chmod 770 /opt/hivemq \
     && chmod +x /opt/hivemq/bin/run.sh /opt/docker-entrypoint.sh

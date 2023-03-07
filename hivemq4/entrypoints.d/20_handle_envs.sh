@@ -36,4 +36,50 @@ if [[ "${HIVEMQ_REST_API_ENABLED}" == "true" ]]; then
   sed -i "s|<\!--REST-API-CONFIGURATION-->|${REST_API_ENABLED_CONFIGURATION}|" /opt/hivemq/conf/config.xml
 fi
 
+# balena version
+
+# Cloud connection configuration to have a connection between the Edge Broker and the Cloud Broker (example below)
+#                <connection>  
+#                    <static>
+#                        <host>157.230.76.185</host>
+#                        <port>1883</port> 
+#                    </static>
+#                </connection>
+#
+if [[ "${HIVEMQ_CLOUD_ENABLED}" == "true" ]]; then
+  echo "Enabling CLOUD connection in bridge-configuration.xml from balenaCloud Device Variables."
+  HIVEMQ_CLOUD_CONFIGURATION="${HIVEMQ_CLOUD_CONFIGURATION//$'\n'/}"
+  sed -i "s|<\!-- configurable host and port -->|${HIVEMQ_CLOUD_CONFIGURATION}|" /opt/hivemq/extensions/hivemq-bridge-extension/bridge-configuration.xml
+fi
+
+
+# Authentication for edge --> cloud connection (example below)
+#                 <authentication>
+#                    <mqtt-simple-authentication>
+#                        <username>a-username</username>
+#                        <password>a-user-password</password>
+#                    </mqtt-simple-authentication>
+#                </authentication>
+#
+if [[ "${HIVEMQ_AUTHENTICATION_ENABLED}" == "true" ]]; then
+  echo "Enabling AUTHENTICATION in bridge-configuration.xml from balenaCloud Device Variables."
+  HIVEMQ_AUTHENTICATION_CONFIGURATION="${HIVEMQ_AUTHENTICATION_CONFIGURATION//$'\n'/}"
+  sed -i "s|<\!-- authentication -->|${HIVEMQ_AUTHENTICATION_CONFIGURATION}|" /opt/hivemq/extensions/hivemq-bridge-extension/bridge-configuration.xml
+fi
+
+
+# Topics and filters configuration (example below)
+#           <topics> 
+#                <topic>
+#                    <filter>iiot/lab/cloud</filter>
+#                    <filter>iiot/lab/webapp/status</filter>
+#                </topic>
+#            </topics>
+#
+if [[ "${HIVEMQ_TOPICS_ENABLED}" == "true" ]]; then
+  echo "Enabling TOPICS in bridge-configuration.xml from balenaCloud Device Variables."
+  HIVEMQ_TOPICS_CONFIGURATION="${HIVEMQ_TOPICS_CONFIGURATION//$'\n'/}"
+  sed -i "s|<\!-- configurable list of filters -->|${HIVEMQ_TOPICS_CONFIGURATION}|" /opt/hivemq/extensions/hivemq-bridge-extension/bridge-configuration.xml
+fi
+
 echo >&3 "setting bind address to ${HIVEMQ_BIND_ADDRESS}"
